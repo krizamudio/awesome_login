@@ -52,4 +52,18 @@ class AyudanteBaseDatos {
     );
     return resultado.isNotEmpty ? resultado.first as Map<String, dynamic> : null;
   }
+
+   Future<Map<String, dynamic>?> obtenerUsuarioPorNombre(String nombreUsuario) async {
+    final db = await baseDatos;
+    final resultado = await db.query(
+      'usuarios',
+      where: 'usuario = ?',
+      whereArgs: [nombreUsuario],
+    );
+
+    if (resultado.isNotEmpty) {
+      return resultado.first;
+    }
+    return null;
+  }
 }

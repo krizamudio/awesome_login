@@ -11,9 +11,11 @@ class PantallaLogin extends StatefulWidget {
 }
 
 class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin {
-  final _claveFormulario = GlobalKey<FormState>();
+  final _claveFormularioLogin = GlobalKey<FormState>();
+  final _claveFormularioRegistro = GlobalKey<FormState>();
   final TextEditingController _controladorUsuario = TextEditingController();
   final TextEditingController _controladorContrasenia = TextEditingController();
+  final TextEditingController _controladorConfirmarContrasenia = TextEditingController();
   final AyudanteBaseDatos _ayudanteBD = AyudanteBaseDatos();
 
   @override
@@ -28,7 +30,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
         ),
       ),
       body: AnimatedBackground(
-        behaviour: RandomParticleBehaviour(),
+        behaviour: BubblesBehaviour(),
         vsync: this,
         child: Stack(
           children: [
@@ -36,10 +38,19 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
-                  key: _claveFormulario,
+                  key: _claveFormularioLogin,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Text(
+                        '¡Inicia Sesión!',
+                        style: TextStyle(
+                          color: Color(0xFF075E54),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
@@ -120,7 +131,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
   }
 
   void _iniciarSesion() async {
-    if (_claveFormulario.currentState!.validate()) {
+    if (_claveFormularioLogin.currentState!.validate()) {
       final usuario = await _ayudanteBD.obtenerUsuario(
         _controladorUsuario.text,
         _controladorContrasenia.text,
@@ -144,47 +155,102 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Registrar usuario'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _controladorUsuario,
-              decoration: InputDecoration(
-                hintText: 'Usuario',
-                filled: true,
-                fillColor: Colors.lightGreen[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+        content: Form(
+          key: _claveFormularioRegistro,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  controller: _controladorUsuario,
+                  decoration: InputDecoration(
+                    hintText: 'Usuario',
+                    filled: true,
+                    fillColor: Colors.lightGreen[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.isEmpty) {
+                      return 'Por favor ingrese su usuario';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-            TextField(
-              controller: _controladorContrasenia,
-              obscureText: true,
-              decoration: InputDecoration(
-                hintText: 'Contraseña',
-                filled: true,
-                fillColor: Colors.lightGreen[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  controller: _controladorContrasenia,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Contraseña',
+                    filled: true,
+                    fillColor: Colors.lightGreen[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.isEmpty) {
+                      return 'Por favor ingrese su contraseña';
+                    }
+                    return null;
+                  },
                 ),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: TextFormField(
+                  controller: _controladorConfirmarContrasenia,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Confirmar Contraseña',
+                    filled: true,
+                    fillColor: Colors.lightGreen[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
+                  validator: (valor) {
+                    if (valor == null || valor.isEmpty) {
+                      return 'Por favor confirme su contraseña';
+                    }
+                    if (valor != _controladorContrasenia.text) {
+                      return 'Las contraseñas no coinciden';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () async {
-              final resultado = await _ayudanteBD.insertarUsuario({
-                'usuario': _controladorUsuario.text,
-                'contraseña': _controladorContrasenia.text
-              });
-              
-              if (resultado > 0) {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Usuario creado con éxito')),
-                );
+              if (_claveFormularioRegistro.currentState!.validate()) {
+                final usuarioExistente = await _ayudanteBD.obtenerUsuarioPorNombre(_controladorUsuario.text);
+                if (usuarioExistente != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('El usuario ya existe')),
+                  );
+                  return;
+                }
+
+                final resultado = await _ayudanteBD.insertarUsuario({
+                  'usuario': _controladorUsuario.text,
+                  'contraseña': _controladorContrasenia.text
+                });
+                
+                if (resultado > 0) {
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Usuario creado con éxito')),
+                  );
+                }
               }
             },
             child: const Text('Registrar'),

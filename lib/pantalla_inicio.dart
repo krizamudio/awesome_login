@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:animated_background/animated_background.dart';
 import 'pantalla_login.dart';
 
-class PantallaInicio extends StatelessWidget {
+class PantallaInicio extends StatefulWidget {
   final Map<String, dynamic> usuario;
 
   const PantallaInicio({super.key, required this.usuario});
 
+  @override
+  _PantallaInicioState createState() => _PantallaInicioState();
+}
+
+class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +28,11 @@ class PantallaInicio extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: usuario['usuario'],
+                  text: widget.usuario['usuario'],
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF25D366),
+                    fontSize: 20.0, // Ajusta el tamaño de la fuente según sea necesario
                   ),
                 ),
               ],
@@ -33,8 +40,19 @@ class PantallaInicio extends StatelessWidget {
           ),
         ),
       ),
-      body: const Center(
-        child: Text('¡Inicio de sesión exitoso!'),
+      body: AnimatedBackground(
+        behaviour: RandomParticleBehaviour(),
+        vsync: this,
+        child: const Center(
+          child: Text(
+            '¡Inicio de sesión exitoso!',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF25D366),
+              fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
