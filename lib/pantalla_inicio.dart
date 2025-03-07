@@ -12,6 +12,31 @@ class PantallaInicio extends StatefulWidget {
 }
 
 class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _animation = Tween<double>(begin: 20, end: 30).animate(_controller)
+      ..addListener(() {
+        setState(() {});
+      });
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +51,15 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
-                    fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
+                    fontSize: 24.0,
                   ),
                 ),
                 TextSpan(
                   text: widget.usuario['usuario'],
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF25D366),
-                    fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
+                    fontSize: _animation.value,
                   ),
                 ),
               ],
@@ -51,7 +76,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color(0xFF25D366),
-              fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
+              fontSize: 24.0,
             ),
           ),
         ),
@@ -77,7 +102,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pop();
               },
               child: const Text('Cancelar'),
               style: TextButton.styleFrom(
@@ -87,7 +112,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
+                Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const PantallaLogin()),

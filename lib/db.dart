@@ -2,10 +2,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class AyudanteBaseDatos {
+  
   static final AyudanteBaseDatos _instancia = AyudanteBaseDatos._interno();
   factory AyudanteBaseDatos() => _instancia;
   static Database? _baseDatos;
-
+  // Nombre de la tabla de usuarios
   final String tablaUsuarios = 'usuarios';
   final String columnaId = 'id';
   final String columnaUsuario = 'usuario';
@@ -13,12 +14,14 @@ class AyudanteBaseDatos {
 
   AyudanteBaseDatos._interno();
 
+  // Obtiene la instancia de la base de datos, inicializándola si es necesario
   Future<Database> get baseDatos async {
     if (_baseDatos != null) return _baseDatos!;
     _baseDatos = await _inicializarBaseDatos();
     return _baseDatos!;
   }
 
+  // Inicializa la base de datos, creando el archivo en la ruta especificada
   Future<Database> _inicializarBaseDatos() async {
     String ruta = join(await getDatabasesPath(), 'base_datos_app.db');
     return await openDatabase(
@@ -28,6 +31,7 @@ class AyudanteBaseDatos {
     );
   }
 
+  // Crea la tabla de usuarios en la base de datos
   Future<void> _crearBaseDatos(Database db, int version) async {
     await db.execute('''
       CREATE TABLE $tablaUsuarios (
@@ -38,11 +42,13 @@ class AyudanteBaseDatos {
     ''');
   }
 
+  // Inserta un nuevo usuario en la tabla de usuarios
   Future<int> insertarUsuario(Map<String, dynamic> usuario) async {
     Database db = await baseDatos;
     return await db.insert(tablaUsuarios, usuario);
   }
 
+  // Obtiene un usuario de la tabla de usuarios basado en el nombre de usuario y la contraseña
   Future<Map<String, dynamic>?> obtenerUsuario(String usuario, String contrasenia) async {
     Database db = await baseDatos;
     List<Map> resultado = await db.query(
@@ -53,7 +59,8 @@ class AyudanteBaseDatos {
     return resultado.isNotEmpty ? resultado.first as Map<String, dynamic> : null;
   }
 
-   Future<Map<String, dynamic>?> obtenerUsuarioPorNombre(String nombreUsuario) async {
+  // Obtiene un usuario de la tabla de usuarios basado en el nombre de usuario
+  Future<Map<String, dynamic>?> obtenerUsuarioPorNombre(String nombreUsuario) async {
     final db = await baseDatos;
     final resultado = await db.query(
       'usuarios',
