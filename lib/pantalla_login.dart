@@ -22,7 +22,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Inicio de Sesión',
+            'App-Login SQLite',
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
