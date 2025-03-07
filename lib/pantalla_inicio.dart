@@ -11,9 +11,10 @@ class PantallaInicio extends StatefulWidget {
   _PantallaInicioState createState() => _PantallaInicioState();
 }
 
+// Clase que representa la pantalla de inicio de sesión exitoso
 class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+  late AnimationController _controller; // Controlador de la animación
+  late Animation<double> _animation; // Animación de la fuente
 
   @override
   void initState() {
@@ -23,9 +24,10 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 20, end: 30).animate(_controller)
-      ..addListener(() {
-        setState(() {});
+    // Animación de la fuente  
+    _animation = Tween<double>(begin: 20, end: 30).animate(_controller) // Inicia la animación
+      ..addListener(() { // Actualiza el estado de la pantalla
+        setState(() {}); 
       });
 
     _controller.forward();

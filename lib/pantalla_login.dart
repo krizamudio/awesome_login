@@ -11,12 +11,12 @@ class PantallaLogin extends StatefulWidget {
 }
 
 class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin {
-  final _claveFormularioLogin = GlobalKey<FormState>();
-  final _claveFormularioRegistro = GlobalKey<FormState>();
-  final TextEditingController _controladorUsuario = TextEditingController();
-  final TextEditingController _controladorContrasenia = TextEditingController();
-  final TextEditingController _controladorConfirmarContrasenia = TextEditingController();
-  final AyudanteBaseDatos _ayudanteBD = AyudanteBaseDatos();
+  final _claveFormularioLogin = GlobalKey<FormState>(); // Formulario para iniciar sesión
+  final _claveFormularioRegistro = GlobalKey<FormState>(); // Formulario para registrar usuario 
+  final TextEditingController _controladorUsuario = TextEditingController(); // Controlador para el campo de usuario
+  final TextEditingController _controladorContrasenia = TextEditingController(); // Controlador para el campo de contraseña
+  final TextEditingController _controladorConfirmarContrasenia = TextEditingController(); // Controlador para el campo de confirmar contraseña
+  final AyudanteBaseDatos _ayudanteBD = AyudanteBaseDatos(); // Un helper para manejar la base de datos
 
   @override
   Widget build(BuildContext context) {
