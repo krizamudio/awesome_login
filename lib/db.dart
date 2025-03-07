@@ -1,17 +1,20 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+// Clase que ayuda a manejar la base de datos
 class AyudanteBaseDatos {
-  
+  // Singleton para asegurar una única instancia de la base de datos
   static final AyudanteBaseDatos _instancia = AyudanteBaseDatos._interno();
   factory AyudanteBaseDatos() => _instancia;
   static Database? _baseDatos;
-  // Nombre de la tabla de usuarios
+
+  // Nombre de la tabla de usuarios y sus columnas
   final String tablaUsuarios = 'usuarios';
   final String columnaId = 'id';
   final String columnaUsuario = 'usuario';
   final String columnaContrasenia = 'contraseña';
 
+  // Constructor interno para el singleton
   AyudanteBaseDatos._interno();
 
   // Obtiene la instancia de la base de datos, inicializándola si es necesario
