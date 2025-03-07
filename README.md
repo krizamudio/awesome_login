@@ -1,4 +1,4 @@
-# 🔐 Flutter Login with SQLite & Animated Background 🔥
+# 🔐 Login hehco con Flutter, SQLite y Animated Background 🔥
 
 Un sistema de autenticación moderno desarrollado con Flutter que combina funcionalidad robusta con una experiencia visual atractiva.
 
