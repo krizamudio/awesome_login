@@ -1,16 +1,24 @@
-# awesome_login
+# 🔐 Login hecho con Flutter, SQLite y Animated Background 🔥
 
-A new Flutter project.
+Un sistema de autenticación moderno desarrollado con Flutter que combina funcionalidad robusta con una experiencia visual atractiva.
 
-## Getting Started
+![Demo](https://via.placeholder.com/800x400?text=Login+Demo+Animation) <!-- Reemplazar con GIF real -->
 
-This project is a starting point for a Flutter application.
+## 🚀 Características Principales
+- ✨ Fondo animado fluido usando `animated_background`
+- 📱 Registro y Login de usuarios
+- 🔒 Almacenamiento seguro local con **SQFlite**
+- 📲 Interfaz de usuario limpia y moderna
+- ✅ Validación de formularios en tiempo real
+- � Persistencia de sesión
 
-A few resources to get you started if this is your first Flutter project:
+## 📦 Dependencias Utilizadas
+[![SQFlite](https://img.shields.io/pub/v/sqflite?label=SQFlite)](https://pub.dev/packages/sqflite)
+[![Animated Background](https://img.shields.io/pub/v/animated_background?label=Animated%20Background)](https://pub.dev/packages/animated_background)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: ^2.3.0
+  animated_background: ^2.0.0
