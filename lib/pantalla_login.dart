@@ -22,6 +22,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFFECE5DD),
         title: Center(
           child: Text(
             'App-Login SQLite',
@@ -102,10 +103,12 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
                         ),
                         child: const Text('Ingresar'),
                       ),
-                      TextButton(
+                      OutlinedButton(
                         onPressed: _mostrarRegistro,
-                        style: TextButton.styleFrom(
-                          foregroundColor: const Color(0xFF25D366),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.black),
+                          backgroundColor: const Color(0xFF25D366),
+                          foregroundColor: Colors.white,
                         ),
                         child: const Text('Crear nueva cuenta'),
                       ),
@@ -154,7 +157,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Registrar usuario'),
+        title: Center(child: const Text('Registrar usuario')),
         content: Form(
           key: _claveFormularioRegistro,
           child: Column(
@@ -229,31 +232,38 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () async {
-              if (_claveFormularioRegistro.currentState!.validate()) {
-                final usuarioExistente = await _ayudanteBD.obtenerUsuarioPorNombre(_controladorUsuario.text);
-                if (usuarioExistente != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('El usuario ya existe')),
-                  );
-                  return;
-                }
+          Center(
+            child: OutlinedButton(
+              onPressed: () async {
+                if (_claveFormularioRegistro.currentState!.validate()) {
+                  final usuarioExistente = await _ayudanteBD.obtenerUsuarioPorNombre(_controladorUsuario.text);
+                  if (usuarioExistente != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('El usuario ya existe')),
+                    );
+                    return;
+                  }
 
-                final resultado = await _ayudanteBD.insertarUsuario({
-                  'usuario': _controladorUsuario.text,
-                  'contraseña': _controladorContrasenia.text
-                });
-                
-                if (resultado > 0) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Usuario creado con éxito')),
-                  );
+                  final resultado = await _ayudanteBD.insertarUsuario({
+                    'usuario': _controladorUsuario.text,
+                    'contraseña': _controladorContrasenia.text
+                  });
+                  
+                  if (resultado > 0) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Usuario creado con éxito')),
+                    );
+                  }
                 }
-              }
-            },
-            child: const Text('Registrar'),
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Colors.black),
+                backgroundColor: const Color(0xFF25D366),
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Registrar'),
+            ),
           ),
         ],
       ),

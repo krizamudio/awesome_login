@@ -16,6 +16,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFFECE5DD),
         title: Center(
           child: RichText(
             text: TextSpan(
@@ -25,6 +26,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
+                    fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
                   ),
                 ),
                 TextSpan(
@@ -32,7 +34,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF25D366),
-                    fontSize: 20.0, // Ajusta el tamaño de la fuente según sea necesario
+                    fontSize: 24.0, // Ajusta el tamaño de la fuente según sea necesario
                   ),
                 ),
               ],
@@ -58,6 +60,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
         onPressed: () {
           _mostrarConfirmacionCierreSesion(context);
         },
+        backgroundColor: const Color(0xFF25D366),
         child: const Icon(Icons.logout),
       ),
     );
@@ -93,7 +96,7 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
               child: const Text('Cerrar sesión'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFF128C7E),
+                backgroundColor: const Color(0xFF25D366),
               ),
             ),
           ],
