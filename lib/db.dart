@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 
 // Clase que ayuda a manejar la base de datos
 class AyudanteBaseDatos {
+ 
   // Singleton para asegurar una única instancia de la base de datos
   static final AyudanteBaseDatos _instancia = AyudanteBaseDatos._interno();
   factory AyudanteBaseDatos() => _instancia;

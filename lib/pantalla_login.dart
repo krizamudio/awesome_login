@@ -10,7 +10,7 @@ class PantallaLogin extends StatefulWidget {
   _EstadoPantallaLogin createState() => _EstadoPantallaLogin();
 }
 
-class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin {
+class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin { // Clase que representa la pantalla de inicio de sesión
   final _claveFormularioLogin = GlobalKey<FormState>(); // Formulario para iniciar sesión
   final _claveFormularioRegistro = GlobalKey<FormState>(); // Formulario para registrar usuario 
   final TextEditingController _controladorUsuario = TextEditingController(); // Controlador para el campo de usuario
@@ -30,7 +30,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
           ),
         ),
       ),
-      body: AnimatedBackground(
+      body: AnimatedBackground( // Fondo animado
         behaviour: BubblesBehaviour(),
         vsync: this,
         child: Stack(
@@ -39,7 +39,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
-                  key: _claveFormularioLogin,
+                  key: _claveFormularioLogin, // Clave para el formulario de inicio de sesión
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -55,7 +55,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          controller: _controladorUsuario,
+                          controller: _controladorUsuario,// Controlador para el campo de usuario
                           decoration: InputDecoration(
                             labelText: 'Usuario',
                             filled: true,
