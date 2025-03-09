@@ -4,8 +4,9 @@ import 'pantalla_login.dart';
 
 class PantallaInicio extends StatefulWidget {
   final Map<String, dynamic> usuario;
+  final Function(bool) onThemeChanged;
 
-  const PantallaInicio({super.key, required this.usuario});
+  const PantallaInicio({super.key, required this.usuario, required this.onThemeChanged});
 
   @override
   _PantallaInicioState createState() => _PantallaInicioState();
@@ -117,7 +118,9 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
                 Navigator.of(context).pop();
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => const PantallaLogin()),
+                  MaterialPageRoute(
+                    builder: (context) => PantallaLogin(onThemeChanged: widget.onThemeChanged),
+                  ),
                 );
               },
               child: const Text('Cerrar sesión'),

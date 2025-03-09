@@ -4,19 +4,22 @@ import 'package:animated_background/animated_background.dart';
 import 'pantalla_inicio.dart';
 
 class PantallaLogin extends StatefulWidget {
-  const PantallaLogin({super.key});
+  final Function(bool) onThemeChanged;
+
+  const PantallaLogin({super.key, required this.onThemeChanged});
 
   @override
   _EstadoPantallaLogin createState() => _EstadoPantallaLogin();
 }
 
-class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin { // Clase que representa la pantalla de inicio de sesión
-  final _claveFormularioLogin = GlobalKey<FormState>(); // Formulario para iniciar sesión
-  final _claveFormularioRegistro = GlobalKey<FormState>(); // Formulario para registrar usuario 
-  final TextEditingController _controladorUsuario = TextEditingController(); // Controlador para el campo de usuario
-  final TextEditingController _controladorContrasenia = TextEditingController(); // Controlador para el campo de contraseña
-  final TextEditingController _controladorConfirmarContrasenia = TextEditingController(); // Controlador para el campo de confirmar contraseña
-  final AyudanteBaseDatos _ayudanteBD = AyudanteBaseDatos(); // Un helper para manejar la base de datos
+class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderStateMixin {
+  final _claveFormularioLogin = GlobalKey<FormState>();
+  final _claveFormularioRegistro = GlobalKey<FormState>();
+  final TextEditingController _controladorUsuario = TextEditingController();
+  final TextEditingController _controladorContrasenia = TextEditingController();
+  final TextEditingController _controladorConfirmarContrasenia = TextEditingController();
+  final AyudanteBaseDatos _ayudanteBD = AyudanteBaseDatos();
+  bool _isDarkMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,19 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
+        actions: [
+          Switch(
+            value: _isDarkMode,
+            onChanged: (value) {
+              setState(() {
+                _isDarkMode = value;
+              });
+              widget.onThemeChanged(value);
+            },
+          ),
+        ],
       ),
-      body: AnimatedBackground( // Fondo animado
+      body: AnimatedBackground(
         behaviour: BubblesBehaviour(),
         vsync: this,
         child: Stack(
@@ -39,7 +53,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Form(
-                  key: _claveFormularioLogin, // Clave para el formulario de inicio de sesión
+                  key: _claveFormularioLogin,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -55,7 +69,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextFormField(
-                          controller: _controladorUsuario,// Controlador para el campo de usuario
+                          controller: _controladorUsuario,
                           decoration: InputDecoration(
                             labelText: 'Usuario',
                             filled: true,
@@ -134,24 +148,29 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
   }
 
   void _iniciarSesion() async {
-    if (_claveFormularioLogin.currentState!.validate()) {
-      final usuario = await _ayudanteBD.obtenerUsuario(
-        _controladorUsuario.text,
-        _controladorContrasenia.text,
+  if (_claveFormularioLogin.currentState!.validate()) {
+    final usuario = await _ayudanteBD.obtenerUsuario(
+      _controladorUsuario.text,
+      _controladorContrasenia.text,
+    );
+
+    if (usuario != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PantallaInicio(
+            usuario: usuario,
+            onThemeChanged: widget.onThemeChanged, // Pasa el parámetro onThemeChanged
+          ),
+        ),
       );
-      
-      if (usuario != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => PantallaInicio(usuario: usuario)),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Credenciales incorrectas')),
-        );
-      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Credenciales incorrectas')),
+      );
     }
   }
+}
 
   void _mostrarRegistro() {
     showDialog(
@@ -248,7 +267,7 @@ class _EstadoPantallaLogin extends State<PantallaLogin> with TickerProviderState
                     'usuario': _controladorUsuario.text,
                     'contraseña': _controladorContrasenia.text
                   });
-                  
+
                   if (resultado > 0) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(

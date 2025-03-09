@@ -5,8 +5,21 @@ void main() {
   runApp(const MiAplicacion());
 }
 
-class MiAplicacion extends StatelessWidget {
+class MiAplicacion extends StatefulWidget {
   const MiAplicacion({super.key});
+
+  @override
+  _MiAplicacionState createState() => _MiAplicacionState();
+}
+
+class _MiAplicacionState extends State<MiAplicacion> {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  void _toggleTheme(bool isDarkMode) {
+    setState(() {
+      _themeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,8 +27,14 @@ class MiAplicacion extends StatelessWidget {
       title: 'Aplicación con Login',
       theme: ThemeData(
         primaryColor: Colors.blue,
+        brightness: Brightness.light,
       ),
-      home: PantallaLogin(),
+      darkTheme: ThemeData(
+        primaryColor: Colors.blue,
+        brightness: Brightness.dark,
+      ),
+      themeMode: _themeMode,
+      home: PantallaLogin(onThemeChanged: _toggleTheme),
     );
   }
 }
