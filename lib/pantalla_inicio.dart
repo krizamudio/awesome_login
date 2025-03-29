@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_background/animated_background.dart';
 import 'pantalla_login.dart';
+import 'maps.dart';
 
 class PantallaInicio extends StatefulWidget {
   final Map<String, dynamic> usuario;
@@ -42,9 +43,11 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFECE5DD),
+        backgroundColor: isDarkMode ? Colors.black : const Color(0xFFECE5DD),
         title: Center(
           child: RichText(
             text: TextSpan(
@@ -84,15 +87,36 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _mostrarConfirmacionCierreSesion(context);
-        },
-        backgroundColor: const Color(0xFF25D366),
-        child: const Icon(Icons.logout),
-      ),
+      floatingActionButton: Column(
+  mainAxisAlignment: MainAxisAlignment.end,
+  children: [
+    FloatingActionButton(
+      onPressed: () {
+        _mostrarConfirmacionCierreSesion(context);
+      },
+      backgroundColor: const Color(0xFF25D366),
+      child: const Icon(Icons.logout),
+    ),
+    const SizedBox(height: 10), // Espaciado entre los botones
+    FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MapsScreen(), // Clase principal de maps.dart
+          ),
+        );
+      },
+      backgroundColor: Colors.blue,
+      child: const Icon(Icons.map),
+    ),
+  ],
+),
+      
     );
+    
   }
+  
 
   void _mostrarConfirmacionCierreSesion(BuildContext context) {
     showDialog(
@@ -107,11 +131,11 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancelar'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF128C7E),
               ),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
@@ -123,15 +147,16 @@ class _PantallaInicioState extends State<PantallaInicio> with TickerProviderStat
                   ),
                 );
               },
-              child: const Text('Cerrar sesión'),
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: const Color(0xFF25D366),
               ),
+              child: const Text('Cerrar sesión'),
             ),
           ],
         );
       },
     );
   }
+  
 }
